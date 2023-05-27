@@ -1,8 +1,8 @@
 import { DomainEvent } from '@domain/onboarding/events'
-import { UserId } from './user-id'
+import { RegistrationId } from './registration-id'
 
 export class UserRegistered implements DomainEvent {
-  public readonly userId: UserId
+  public readonly userId: RegistrationId
   public readonly type = 'USER_REGISTERED'
   public readonly occurredAt = new Date()
 

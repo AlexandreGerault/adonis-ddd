@@ -1,10 +1,10 @@
-import { UserGateway } from '@domain/onboarding/gateways'
-import { User } from '@domain/onboarding/entities/user'
+import { RegistrationGateway } from '@domain/onboarding/gateways'
+import { Registration } from '@domain/onboarding/entities/registration'
 
-class InMemoryUserGateway implements UserGateway {
-  private _users: User[] = []
+class InMemoryUserGateway implements RegistrationGateway {
+  private _users: Registration[] = []
 
-  constructor(users: User[] = []) {
+  constructor(users: Registration[] = []) {
     this._users = users
   }
 
@@ -12,7 +12,7 @@ class InMemoryUserGateway implements UserGateway {
     return Promise.resolve(this._users.some((user) => user.pseudo.value() === pseudo))
   }
 
-  public async save(user: User) {
+  public async save(user: Registration) {
     this._users.push(user)
   }
 

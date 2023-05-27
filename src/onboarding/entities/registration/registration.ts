@@ -1,34 +1,34 @@
-import { UserException } from './user-exception'
+import { RegistrationException } from './registration-exception'
 import { z } from 'zod'
 
 import { Email } from './email'
 import { Pseudo } from './pseudo'
-import { Password } from './password'
+import { PlainPassword } from './password'
 import { DomainEvent } from '@domain/onboarding/events'
-import { UserId } from './user-id'
+import { RegistrationId } from './registration-id'
 import { UserRegistered } from './user-registered'
 
-export class User {
+export class Registration {
   public readonly email: Email
   public readonly pseudo: Pseudo
-  public readonly password: Password
-  public readonly userId: UserId
+  public readonly password: PlainPassword
+  public readonly userId: RegistrationId
   private readonly _domainEvents: DomainEvent[] = []
 
-  constructor(userId: UserId, email: Email, pseudo: Pseudo, password: Password) {
+  constructor(userId: RegistrationId, email: Email, pseudo: Pseudo, password: PlainPassword) {
     this.userId = userId
     this.email = email
     this.pseudo = pseudo
     this.password = password
   }
 
-  public static create(email: string, pseudo: string, password: string): User {
+  public static create(email: string, pseudo: string, password: string): Registration {
     try {
-      const user = new User(
-        UserId.generate(),
+      const user = new Registration(
+        RegistrationId.generate(),
         new Email(email),
         new Pseudo(pseudo),
-        new Password(password)
+        new PlainPassword(password)
       )
 
       user.emit(new UserRegistered(user.userId))
@@ -39,7 +39,7 @@ export class User {
         throw error
       }
 
-      throw new UserException(
+      throw new RegistrationException(
         'INVALID_USER',
         error.issues.map((issue) => ({
           code: issue.message,

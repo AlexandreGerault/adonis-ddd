@@ -1,5 +1,9 @@
-import { User, UserError, UserException } from '@domain/onboarding/entities/user'
-import { UserGateway } from '@domain/onboarding/gateways'
+import {
+  Registration,
+  RegistrationError,
+  RegistrationException,
+} from '@domain/onboarding/entities/registration'
+import { RegistrationGateway } from '@domain/onboarding/gateways'
 import { TrashEmailGateway } from '@domain/onboarding/gateways/tash-email-gateway'
 import { EventPublisher } from '../event-publisher'
 
@@ -10,7 +14,7 @@ export interface RegisterProps {
 }
 
 export interface RegisterPresenter {
-  validationFailed(errors: UserError[]): void
+  validationFailed(errors: RegistrationError[]): void
   pseudoAlreadyInUse(): void
   emailAlreadyInUse(): void
   userRegistered(): void
@@ -19,7 +23,7 @@ export interface RegisterPresenter {
 
 export class Register {
   constructor(
-    private readonly userGateway: UserGateway,
+    private readonly userGateway: RegistrationGateway,
     private readonly trashEmail: TrashEmailGateway,
     private readonly eventPublisher: EventPublisher
   ) {}
@@ -41,11 +45,11 @@ export class Register {
     }
 
     try {
-      const user = User.create(input.email, input.pseudo, input.password)
+      const user = Registration.create(input.email, input.pseudo, input.password)
       await this.userGateway.save(user)
       this.eventPublisher.publish(user.domainEvents())
     } catch (error) {
-      if (error instanceof UserException) {
+      if (error instanceof RegistrationException) {
         presenter.validationFailed(error.errors)
         return
       }

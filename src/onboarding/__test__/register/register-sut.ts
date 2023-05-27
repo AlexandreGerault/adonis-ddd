@@ -1,12 +1,12 @@
 import { Register, RegisterProps } from '@domain/onboarding/application/register'
 import { InMemoryUserGateway } from '@domain/onboarding/__test__/in-memory-user-gateway'
-import { User } from '@domain/onboarding/entities/user'
+import { Registration } from '@domain/onboarding/entities/registration'
 import { RegisterTestPresenter } from './register-presenter'
 import { TrashEmailGateway } from '@domain/onboarding/gateways/tash-email-gateway'
 import { InMemoryEventPublisher } from '../in-memory-event-publisher'
 
 interface RegisterSUTProps {
-  users: User[]
+  users: Registration[]
   emailIsTrash?: boolean
 }
 
@@ -23,13 +23,13 @@ export function registerSUT(props: RegisterSUTProps = { users: [] }) {
     withExistingEmail(email: string) {
       return registerSUT({
         ...props,
-        users: [...props.users, User.create(email, 'pseudo', 'Password_0!')],
+        users: [...props.users, Registration.create(email, 'pseudo', 'Password_0!')],
       })
     },
     withExistingPseudo(pseudo: string) {
       return registerSUT({
         ...props,
-        users: [...props.users, User.create('email@example.com', pseudo, 'Password_0!')],
+        users: [...props.users, Registration.create('email@example.com', pseudo, 'Password_0!')],
       })
     },
     considerEmailIsTrash() {

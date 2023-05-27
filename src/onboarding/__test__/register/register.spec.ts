@@ -1,6 +1,6 @@
 import { test } from '@japa/runner'
 import { registerSUT } from './register-sut'
-import { UserRegistered } from '@domain/onboarding/entities/user/user-registered'
+import { UserRegistered } from '@domain/onboarding/entities/registration/user-registered'
 
 test.group('Register', () => {
   test('it can register a user', async ({ assert }) => {

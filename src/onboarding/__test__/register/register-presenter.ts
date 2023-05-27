@@ -1,10 +1,10 @@
 import { RegisterPresenter } from '@domain/onboarding/application/register'
-import { UserError } from '@domain/onboarding/entities/user/user-error'
+import { RegistrationError } from '@domain/onboarding/entities/registration/registration-error'
 
 export class RegisterTestPresenter implements RegisterPresenter {
   public response: string
 
-  public errors: UserError[] = []
+  public errors: RegistrationError[] = []
 
   public emailAlreadyInUse(): void {
     this.response = 'User already exists with this email'
@@ -18,7 +18,7 @@ export class RegisterTestPresenter implements RegisterPresenter {
     this.response = 'User already exists with this pseudo'
   }
 
-  public validationFailed(errors: UserError[]): void {
+  public validationFailed(errors: RegistrationError[]): void {
     this.errors = errors
   }
 

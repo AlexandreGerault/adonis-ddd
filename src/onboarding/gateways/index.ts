@@ -1,1 +1,1 @@
-export * from './user-gateway'
+export * from './registration-gateway'

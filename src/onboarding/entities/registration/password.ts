@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export class Password {
+export class PlainPassword {
   private password: string
 
   constructor(password: string) {
