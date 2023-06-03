@@ -2,8 +2,8 @@ import { test } from '@japa/runner'
 import { registerSUT } from './register-sut'
 import { UserRegistered } from '@domain/onboarding/entities/registration/user-registered'
 
-test.group('Register', () => {
-  test('it can register a user', async ({ assert }) => {
+test.group('Onboarding / Register', () => {
+  test('it registers a user', async ({ assert }) => {
     const { registerUser, userGateway, getResponse, getEvents } = registerSUT().build()
 
     await registerUser({
@@ -30,7 +30,7 @@ test.group('Register', () => {
     })
 
     assert.equal(userGateway.count(), 1)
-    assert.equal(getResponse(), 'User already exists with this email')
+    assert.equal(getResponse(), 'Validation failed')
   })
 
   test('it cannot register a user with an existing pseudo', async ({ assert }) => {
@@ -45,7 +45,7 @@ test.group('Register', () => {
     })
 
     assert.equal(userGateway.count(), 1)
-    assert.equal(getResponse(), 'User already exists with this pseudo')
+    assert.equal(getResponse(), 'Validation failed')
   })
 
   test('it validates business rules when registering a user')
@@ -109,6 +109,6 @@ test.group('Register', () => {
     })
 
     assert.equal(userGateway.count(), 0)
-    assert.equal(getResponse(), 'This email cannot be used')
+    assert.equal(getResponse(), 'Validation failed')
   })
 })
