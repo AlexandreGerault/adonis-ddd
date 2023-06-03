@@ -7,16 +7,15 @@ import { DomainEvent } from '@domain/onboarding/events'
 import { RegistrationId } from './registration-id'
 import { UserRegistered } from './user-registered'
 import { HashedPassword } from './hashed-password'
+import { AggregateRoot } from '@domain/onboarding/aggregate-root'
 
-export class Registration {
+export class Registration extends AggregateRoot<RegistrationId> {
   public readonly email: Email
   public readonly pseudo: Pseudo
   public readonly password: HashedPassword
-  public readonly userId: RegistrationId
-  private readonly _domainEvents: DomainEvent[] = []
 
   constructor(userId: RegistrationId, email: Email, pseudo: Pseudo, password: HashedPassword) {
-    this.userId = userId
+    super(userId)
     this.email = email
     this.pseudo = pseudo
     this.password = password
@@ -26,7 +25,7 @@ export class Registration {
     try {
       const user = new Registration(RegistrationId.generate(), email, pseudo, password)
 
-      user.emit(new UserRegistered(user.userId))
+      user.emit(new UserRegistered(user.id))
 
       return user
     } catch (error) {
@@ -41,13 +40,5 @@ export class Registration {
         }))
       )
     }
-  }
-
-  public domainEvents(): DomainEvent[] {
-    return this._domainEvents
-  }
-
-  private emit(event: DomainEvent): void {
-    this._domainEvents.push(event)
   }
 }
